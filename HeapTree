@@ -1,0 +1,65 @@
+#include <iostream>
+using namespace std;
+
+void Heap_Insert(int* HT, int last, int key);
+void Heap_Increase_Key(int* HT, int i, int key);
+void Show(int* HT, int last);
+
+int main()
+{
+	int HTArray[100];
+	int inp, last = 0;
+	cout << "Input :";
+	cin >> inp;
+	while (inp > 0)
+	{
+		Heap_Insert(HTArray, last, inp);
+		cout << "Ouput :" << endl;
+		Show(HTArray, last);
+		cout << endl;
+		last++;
+		cout << "Input :";
+		cin >> inp;
+	}
+	return 0;
+}
+
+void Heap_Insert(int* HT, int last, int key)
+{
+	HT[last] = -1;
+	Heap_Increase_Key(HT, last, key);
+}
+void Heap_Increase_Key(int* HT, int i, int key)
+{
+	if (key > HT[i])
+	{
+		HT[i] = key;
+		while (i > 0 && HT[i] > HT[(i + 1) / 2 - 1])
+		{
+			int t = HT[i];
+			HT[i] = HT[(i + 1) / 2 - 1];
+			HT[(i + 1) / 2 - 1] = t;
+			i = (i + 1) / 2 - 1;
+		}
+	}
+}
+void Show(int* HT, int last)
+{
+	int Num = 1, Index = 1, i = 0;
+	while (i <= last)
+	{
+		if (Index++ == Num)
+		{
+			if (i == last)
+				cout << HT[i];
+			else
+				cout << HT[i] << endl;
+			Num = Num * 2;
+			Index = 1;
+		}
+		else
+			cout << HT[i] << " | ";
+		i++;
+	}
+	cout << endl;
+}
