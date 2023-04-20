@@ -1,0 +1,93 @@
+#include <iostream>
+using namespace std;
+
+class HeapTree
+{
+private:
+	int* H;
+	int Size;
+	int* addSize(int* Data);
+public:
+	HeapTree();
+	~HeapTree();
+	void Heap_Insert(int& last, int& key);
+	void Heap_Increase_Key(int i, int& key);
+	void Show(int& last);
+};
+
+HeapTree::HeapTree()
+{
+	Size = 10;
+	H = new int[this->Size];
+}
+HeapTree::~HeapTree()
+{
+	delete[] H;
+}
+int* HeapTree::addSize(int* Data)
+{
+	int* newH = new int[Size + 10];
+	for (int i = 0; i < Size; i++)
+	{
+		newH[i] = Data[i];
+	}
+	Size += 10;
+	delete[] Data;
+	return newH;
+}
+void HeapTree::Heap_Insert(int& last, int& key)
+{
+	if (last == this->Size)
+		this->H = addSize(this->H);
+	this->H[last] = -1;
+	Heap_Increase_Key(last, key);
+}
+void HeapTree::Heap_Increase_Key(int i, int& key)
+{
+	if (key > this->H[i])
+	{
+		this->H[i] = key;
+		while (i > 0 && this->H[i] > this->H[(i + 1) / 2 - 1])
+		{
+			swap(this->H[i], this->H[(i + 1) / 2 - 1]);
+			i = (i + 1) / 2 - 1;
+		}
+	}
+}
+void HeapTree::Show(int& last)
+{
+	int Num = 1, Index = 1, i = 0;
+	while (i <= last)
+	{
+		if (Index++ == Num)
+		{
+			if (i == last)
+				cout << this->H[i++];
+			else
+				cout << this->H[i++] << endl;
+			Num *= 2;
+			Index = 1;
+		}
+		else
+			cout << this->H[i++] << " | ";
+	}
+	cout << endl;
+}
+
+int main()
+{
+	HeapTree H;
+	int inp, last = 0;
+	cout << "Input :";
+	cin >> inp;
+	while (inp > 0)
+	{
+		H.Heap_Insert(last, inp);
+		cout << "Ouput :" << endl;
+		H.Show(last);
+		last++;
+		cout << "\nInput :";
+		cin >> inp;
+	}
+	return 0;
+}
