@@ -1,0 +1,51 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+unsigned short u[10];//最大表示範圍
+int n;
+
+void output()
+{
+	int i, x = 0;
+	cout << '{';
+	for (i = 1; i < n; i++)
+	{
+		if (u[i] && x)
+		{
+			printf(",%d", i);
+		}
+		else if (u[i])
+		{
+			x = 1; printf("%d", i);
+		}
+	}
+	cout << '}';
+	return;
+}
+//以上表示集合的迴圈
+void recur(long l)
+{
+	int i;
+	if (l >= n)
+		return;
+	else
+	{
+		u[l] = 1;
+		output();
+		for (i = l + 1; i <= n; i++)
+		recur(i);
+		u[l] = 0;
+	}
+}
+//以上是位元是否為1
+int main()
+{
+	int i;
+	cin >> n; n++;
+	for (i = 0; i <= n; i++) u[i];
+	for (i = 1; i <= n; i++) recur(i);
+	cout << '{';
+	cout << '}';
+	system("pause");
+	return 0;
+}
