@@ -1,0 +1,160 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+class hotel {
+private:
+	int Double, Four, Luxury;
+public:
+	hotel(void) {
+		Double = 2;
+		Four = 3;
+		Luxury = 1;
+	}
+	void Left(void) {
+		cout << "房間:" << endl;
+		cout << "雙人房 :" << Double << " 間 , 四人房：" << Four << " 間 , 豪華套房：" << Luxury << " 間" << endl;
+	}
+	int book(int room, int price, int n, int money) {
+		int left;
+		switch (room)
+		{
+		case 1:
+			left = Double;
+			break;
+		case 2:
+			left = Four;
+			break;
+		case 3:
+			left = Luxury;
+			break;
+		}
+		if (n > left) {
+			cout << " 房間已滿，已預訂 " << left << " 間" << room << endl;
+			cout << " 共 " << price*left << " 元" << endl;
+			switch (room)
+			{
+			case 1:
+				Double = 0;
+				break;
+			case 2:
+				Four = 0;
+				break;
+			case 3:
+				Luxury = 0;
+				break;
+			}
+			return(price*left);
+		}
+		else {
+			cout << " 交易完成，預訂 " << n << " 間 " << room << endl;
+			cout << " 共 " << price*n << " 元" << endl;
+			switch (room)
+			{
+			case 1:
+				Double -= n;
+				break;
+			case 2:
+				Four -= n;
+				break;
+			case 3:
+				Luxury -= n;
+				break;
+			}
+			return(price*n);
+		}
+	}
+};
+class room {
+private:
+	int DoublePrice, FourPrice, LuxuryPrice;
+public:
+	room(void) {
+		DoublePrice = 1500;
+		FourPrice = 2500;
+		LuxuryPrice = 5000;
+	}
+	int Price(int color) {
+		switch (color)
+		{
+		case 1:
+			return(DoublePrice);
+		case 2:
+			return(FourPrice);
+		case 3:
+			return(LuxuryPrice);
+		}
+	}
+};
+class customer {
+private:
+	
+public:
+	
+};
+int main(void) {
+	hotel hotel;
+	room room;
+	int cust = 0, choose, roomtype, i, j, phone;
+	char name;
+	bool custYes = 1, leave = 0, chseYes = 0;
+	while (custYes == 1) {
+		customer *cus = new customer;
+		cust++;
+		while (leave == 0) {
+			cout << " 顧客 " << cust << " 請問您要做什麼?";
+			cout << " (1)訂房" << " (2)查詢空房" << " (3)離開" << endl;
+			cin >> choose;
+			chseYes = 0;
+			system("cls");
+			switch (choose) {
+			case 1:
+				while (chseYes == 0) {
+					chseYes = 1;
+					cout << "(1)雙人房" << endl << "(2)四人房" << endl << "(3)豪華套房" << endl;
+					cout << " 請輸入：";
+					cin >> roomtype;
+					system("cls");
+					if (roomtype > 3 || roomtype < 1) {
+						chseYes = 0;
+						cout << " 輸入錯誤,請重新輸入" << endl;
+					}
+					else
+					{
+						cout << " 請輸入訂房日期：";
+						cin >> i;
+						cout << " 請輸入退房日期: ";
+						cin >> j;
+						cout << " 請輸入姓名: ";
+						cin >> name;
+						cout << " 請輸入電話: ";
+						cin >> phone;
+						system("cls");
+						
+					}
+				}
+				break;
+			case 2:
+				hotel.Left();
+				break;
+			case 3:
+				delete(cus);
+				leave = 1;
+				break;
+			default:
+				cout << " 輸入錯誤,請重新輸入" << endl;
+				break;
+			}
+		}
+		system("cls");
+		cout << " 顧客 " << cust << " 離開" << endl;
+		cout << " 是否有下一位顧客" << endl << " (1)是" << endl << " (2)否" << endl;
+		cin >> choose;
+		leave = 0;
+		if (choose == 2)
+			custYes = 0;
+		system("cls");
+	}
+	system("pause");
+	return (0);
+}
