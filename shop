@@ -1,0 +1,171 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+class shop {
+private:
+	int RedLeft, GreenLeft, BlueLeft;
+public:
+	shop(void) {
+		RedLeft = 10;
+		GreenLeft = 3;
+		BlueLeft = 13;
+	}
+	void Left(void) {
+		cout << "庫存:" << endl;
+		cout << " 紅球：" << RedLeft << " 顆 , 綠球：" << GreenLeft << " 顆 , 藍球：" << BlueLeft << " 顆" << endl;
+	}
+	int buy(int color, int price, int n, int money) {
+		int left;
+		switch (color)
+		{
+		case 1:
+			left = RedLeft;
+			break;
+		case 2:
+			left = GreenLeft;
+			break;
+		case 3:
+			left = BlueLeft;
+			break;
+		}
+		if (price*n > money) {
+			cout << " 餘額不夠，交易失敗" << endl;
+			return(0);
+		}
+		else if (n > left) {
+			cout << " 庫存不夠，已購買 " << left << " 顆球" << endl;
+			cout << " 共 " << price*left << " 元" << endl;
+			switch (color)
+			{
+			case 1:
+				RedLeft = 0;
+				break;
+			case 2:
+				GreenLeft = 0;
+				break;
+			case 3:
+				BlueLeft = 0;
+				break;
+			}
+			return(price*left);
+		}
+		else {
+			cout << " 交易成功，購買 " << n << " 顆球" << endl;
+			cout << " 共 " << price*n << " 元" << endl;
+			switch (color)
+			{
+			case 1:
+				RedLeft -= n;
+				break;
+			case 2:
+				GreenLeft -= n;
+				break;
+			case 3:
+				BlueLeft -= n;
+				break;
+			}
+			return(price*n);
+		}
+	}
+};
+class ball {
+private:
+	int RedPrice, GreenPrice, BluePrice;
+public:
+	ball(void) {
+		RedPrice = 100;
+		GreenPrice = 120;
+		BluePrice = 140;
+	}
+	int Price(int color) {
+		switch (color)
+		{
+		case 1:
+			return(RedPrice);
+		case 2:
+			return(GreenPrice);
+		case 3:
+			return(BluePrice);
+		}
+	}
+};
+class customer {
+private:
+	int money;
+public:
+	customer(void) {
+		money = 1000;
+	}
+	void getMoney(int i) {
+		cout << " 您剩下 " << money << " 元" << endl;
+	}
+	int getMoney1(void) {
+		return(money);
+	}
+	void Less(int n) {
+		money -= n;
+	}
+};
+int main(void) {
+	shop shop;
+	ball ball;
+	int cust = 0, choose, ballcolor, n;
+	bool custYes = 1, leave = 0, chseYes = 0;
+	while (custYes == 1) {
+		customer *cus = new customer;
+		cust++;
+		while (leave == 0) {
+			cout << " 顧客 " << cust << " 請選擇 : ";
+			cout << " (1)購買" <<" (2)查詢庫存" << " (3)查詢剩下的錢" << " (4)離開" << endl;
+			cin >> choose;
+			chseYes = 0;
+			system("cls");
+			switch (choose) {
+			case 1:
+				while (chseYes == 0) {
+					chseYes = 1;
+					cout << "(1)紅球" << endl << "(2)綠球" << endl << "(3)籃球" << endl;
+					cout << " 請輸入：";
+					cin >> ballcolor;
+					system("cls");
+					if (ballcolor > 3 || ballcolor< 1) {
+						chseYes = 0;
+						cout << " 輸入錯誤,請重新輸入" << endl;
+					}
+					else
+					{
+						cout << " 請輸入要購買的數量：";
+						cin >> n;
+						system("cls");
+						cus->Less(shop.buy(ballcolor, ball.Price(ballcolor), n, cus->getMoney1()));
+					}
+				}
+				break;
+			case 2:
+				shop.Left();
+				break;
+			case 3:
+				cus->getMoney(cust);
+				break;
+			case 4:
+				delete(cus);
+				leave = 1;
+				break;
+			default:
+				cout << " 輸入錯誤,請重新輸入" << endl;
+				break;
+			}
+		}
+		system("cls");
+		cout << " 顧客 " << cust << " 離開" << endl;
+		cout << " 是否有下一位顧客" << endl << " (1)是" << endl << " (2)否" << endl;
+		cin >> choose;
+		leave = 0;
+		if (choose == 2)
+			custYes = 0;
+		system("cls");
+	}
+	system("pause");
+	return (0);
+}
