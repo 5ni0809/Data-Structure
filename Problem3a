@@ -1,0 +1,23 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+int ack_re(int m,int n) //定義Ackermann函數
+{
+	if (m == 0)
+		return n + 1;    //m = 0 時 , n + 1
+	if (n == 0 && m > 0) //n = 0 且 m > 0 時 , 代入此涵式  
+		return ack_re(m - 1, 1);
+	return ack_re(m - 1, ack_re(m, n - 1));   //以上都不是 , 則代入左涵式
+}
+int main(void)
+{
+	int m, n;   //宣告m,n變數
+	cout << "Ackerman's Function " << endl << "A(m,n)以空白鍵間隔> : ";
+	cin >> m;
+	cin.get();//空白格
+	cin >> n;
+	cout << ack_re(m, n) << endl;
+	system("pause");
+	return 0;
+}
