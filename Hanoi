@@ -1,0 +1,30 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+void Hanoi(int num, int start, int middle, int final)
+{
+	if (num == 1)
+	{
+		cout << "第" << num << "個圓盤,從塔" << start << "到塔" << final << endl;
+	}
+	else
+	{
+		Hanoi(num - 1, start, final, middle);
+		cout << "第" << num << "個圓盤,從塔" << start << "到塔" << final << endl;
+		Hanoi(num - 1, middle, start, final);
+	}
+}
+int Moves(int n) {
+	if (n == 1)	return 1;
+	return 2 * Moves(n - 1) + 1;
+}
+int main(void)
+{
+	
+	cout << "河內塔:3個柱子,4個圓盤" << endl;
+	Hanoi(4, 1, 2, 3);
+	cout << "總搬移次數:" << Moves(4) << endl;
+	system("pause");
+	return(0);
+}
