@@ -1,0 +1,18 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+long fib(long n)
+{
+	if (n == 0 || n == 1) return n; // n = 0、1時回傳為n
+	else return (fib(n - 1) + fib(n - 2)); // 不是則回傳至此涵式
+}
+int main()
+{
+	int i = 0;//宣告項數變數
+	cout << "費氏數列 例:f0 = 0,f1 = 0,f2 = 1,… " << endl << "輸入項數(大於1) : ";
+	cin >> i;  //輸入項數值
+	cout << "f" << i << " = " << fib(i) << endl;
+	system("pause");
+	return 0;
+}
