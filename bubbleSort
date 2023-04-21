@@ -1,0 +1,76 @@
+#include <iostream>
+using namespace std;
+template <class T>
+T bubbleSort(T[], int);
+
+int main()
+{
+	int *ptrint;//宣告指標 ptr
+	double *ptrdou;
+	char *ptrch;
+	int size;//宣告陣列大小
+	cout << "請輸入整數的陣列大小:";
+	cin >> size;//輸入陣列大小
+	ptrint = new int[size];//建立動態記憶體陣列
+	for (int i = 0; i < size; i++)
+		cin >> *(ptrint + i);//輸入陣列中的資料
+	cout << "排序前:" << endl;
+	for (int j = 0; j < size; j++)
+		cout << *(ptrint + j) << " ";//印出陣列中的資料
+	cout << endl;
+	bubbleSort(ptrint, size);
+	cout << "排序後:" << endl;
+	for (int k = 0; k < size; k++)
+		cout << *(ptrint + k) << " ";//印出排序後的陣列中的資料
+	cout << endl << endl;
+
+	cout << "請輸入浮點數的陣列大小:";
+	cin >> size;//輸入陣列大小
+	ptrdou = new double[size];//建立動態記憶體陣列
+	for (int i = 0; i < size; i++)
+		cin >> *(ptrdou + i);//輸入陣列中的資料
+	cout << "排序前:" << endl;
+	for (int j = 0; j < size; j++)
+		cout << *(ptrdou + j) << " ";//印出陣列中的資料
+	cout << endl;
+	bubbleSort(ptrdou, size);
+	cout << "排序後:" << endl;
+	for (int k = 0; k < size; k++)
+		cout << *(ptrdou + k) << " ";//印出排序後的陣列中的資料
+	cout << endl << endl;
+
+
+	cout << "請輸入字元的陣列大小:";
+	cin >> size;//輸入陣列大小
+	ptrch = new char[size];//建立動態記憶體陣列
+	for (int i = 0; i < size; i++)
+		cin >> *(ptrch + i);//輸入陣列中的資料
+	cout << "排序前:" << endl;
+	for (int j = 0; j < size; j++)
+		cout << *(ptrch + j) << " ";//印出陣列中的資料
+	cout << endl;
+	bubbleSort(ptrch, size);
+	cout << "排序後:" << endl;
+	for (int k = 0; k < size; k++)
+		cout << *(ptrch + k) << " ";//印出排序後的陣列中的資料
+	cout << endl;
+	delete ptrch, ptrint, ptrdou;
+	system("pause");
+	return 0;
+}
+template <class T>
+T bubbleSort(T a[], int len)
+{
+	T temp;
+	int i, j;
+	for (i = 0; i < len - 1; i++)
+		for (j = 0; j < len - 1 - i; j++)
+			if (a[j] > a[j + 1])
+			{
+				temp = a[j];
+				a[j] = a[j + 1];
+				a[j + 1] = temp;
+			}
+	return *a;
+}
+
