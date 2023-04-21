@@ -1,0 +1,25 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+long fib(long n)
+{
+	long x = 0, y = 1, result = 1;
+	if (n == 0 || n == 1) return n; // n = 0、1時回傳為n
+	for (int i = 1; i < n; i++)     //以迴圈的方式算費氏數列
+	{
+		result = x + y;
+		x = y;
+		y = result;
+	}
+	return result;
+}
+int main()
+{
+	int i = 0;  //宣告項數變數
+	cout << "費氏數列 例:f0 = 0,f1 = 0,f2 = 1,… " << endl << "輸入項數(大於1) : ";
+	cin >> i;  //輸入項數值
+	cout << "f" << i << " = " << fib(i) << endl;
+	system("pause");
+	return 0;
+}
