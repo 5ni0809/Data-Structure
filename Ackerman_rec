@@ -1,0 +1,31 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+int ack_nre(int m, int n)
+{
+	for (;;)
+	{
+		if (m == 0)
+			n + 1;
+
+	}
+
+
+	if (m == 0)
+		return n + 1;
+	if (n == 0 && m > 0)
+		return ack_nre(m - 1, 1);
+	return ack_nre(m - 1, ack_nre(m, n - 1));
+}
+int main(void)
+{
+	int m, n;
+	cout << "Ackerman's Function " << endl << "A(m,n)以空白鍵間隔> : ";
+	cin >> m;
+	cin.get();
+	cin >> n;
+	cout << ack_nre(m, n) << endl;
+	system("pause");
+	return 0;
+}
