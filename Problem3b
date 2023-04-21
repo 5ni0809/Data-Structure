@@ -1,0 +1,108 @@
+#include <iostream>
+#include <stdio.h>
+#include <conio.h>
+#include <malloc.h>
+using namespace std;
+#define SYM_NOR 0
+#define SYM_SPEC 1
+#define SYM_EMPTY 2
+
+struct _StackEntry {
+	int value, special;
+	struct _StackEntry *next;
+};
+typedef _StackEntry StackEntry, *pStackEntry;
+pStackEntry st[2];
+
+int Push(int StackNo, int value, int special)
+{
+	pStackEntry ptemp;
+	ptemp = (pStackEntry)malloc(sizeof(StackEntry));
+	ptemp->value = value;
+	ptemp->special = special;
+	ptemp->next = NULL;
+	if (st[StackNo] == NULL) {
+		st[StackNo] = ptemp;
+	}
+	else {
+		ptemp->next = st[StackNo];
+		st[StackNo] = ptemp;
+	}
+	return 0;
+}
+
+int Pop(int StackNo, int *special)
+{
+	int returnValue;
+	pStackEntry ptemp;
+
+	if (st[StackNo] == NULL) {
+		*special = SYM_EMPTY;	// Stack is empty
+		return 0;
+	}
+	else {
+		ptemp = st[StackNo];
+		st[StackNo] = ptemp->next;
+		returnValue = ptemp->value;
+		*special = ptemp->special;
+		free(ptemp);
+		return returnValue;
+	}
+}
+
+int FreeStack() {
+	int sptemp, i;
+	for (i = 0; i<2; i++)
+		while (st[i] != NULL)
+			Pop(i, &sptemp);
+	return 0;
+}
+
+int ack_nre(int m, int n)
+{
+	int mv, nv;	//m's value & n's value
+	int ms, ns;	//m's special & n's special
+	int result;
+
+	st[0] = NULL;	// Initialize stack1 and stack2;
+	st[1] = NULL;
+
+	Push(0, m, SYM_NOR);	//push m and n into stack1;
+	Push(0, n, SYM_NOR);
+	do {
+		nv = Pop(0, &ns);	// pop n and m from stack1;
+		mv = Pop(0, &ms);
+
+		if (ns == SYM_SPEC)	// if(n is a special symbol) n=pop from stack2;
+			nv = Pop(1, &ns);
+
+		if (mv == 0)	// if(m=0) push (n+1) onto stack2;
+			Push(1, nv + 1, SYM_NOR);
+		else if (nv == 0) {	// push m-1 and 1 onto stack1;
+			Push(0, mv - 1, SYM_NOR);
+			Push(0, 1, SYM_NOR);
+		}
+		else {
+			Push(0, mv - 1, SYM_NOR);	// push m-1 and special symbol onto stack1;
+			Push(0, 0, SYM_SPEC);
+			Push(0, mv, SYM_NOR);	// push m and n-1 onto stack1;
+			Push(0, nv - 1, SYM_NOR);
+		}
+	} while (st[0] != NULL);	//while(stack1 is not empty);
+
+	result = Pop(1, &ms);	// result = pop from stack2;
+	return result;
+}
+
+int main(int argc, char* argv[])
+{
+	int m, n, r;
+	cout << "Ackerman's Function " << endl << "A(m,n)以空白鍵間隔> : ";
+	cin >> m;
+	cin.get();
+	cin >> n;
+	r = ack_nre(m, n);
+	cout << r << endl;
+	system("pause");
+	return 0;
+}
