@@ -1,0 +1,128 @@
+//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓參數定義↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+#include<iostream>
+#include<fstream>
+#define people 10  //人數
+#define work 0.3   //作業佔%數
+#define middle 0.3 //期中考佔%數
+#define final 0.4  //期末考佔%數
+#define size 10    //字串大小
+using namespace std;
+//↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑參數定義↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓參數宣告↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+int main()
+{
+
+	char name[people][size] = {}, workk[people][size] = {}, 
+		middlee[people][size] = {}, finall[people][size] = {}, line[size] = {};//各成績字串
+	int cmd;                                                                   //指令
+	int intwork[people], intmiddle[people], intfinal[people];                  //各成績整數
+	int distribute[10];                                                        //成績分布
+	double average = 0, SD = 0;                                                //平均分數,標準差
+	double total[people];                                                      //全班總平均
+	fstream fp, re;
+	char filename[] = "Grade.txt";										       //檔案名稱
+//↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑參數宣告↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓讀檔處理↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+	fp.open(filename, ios::in);
+	for (int i = 0; i<4; i++)
+		fp.getline(line, sizeof(line), ',');
+	//cout << line;
+	for (int i = 0; i < people; i++)
+	{
+
+		distribute[i] = 0;
+		for (int j = 0; j<4; j++)
+		{
+			fp.getline(line, sizeof(line), ',');
+			switch (j)
+			{
+			case 0:
+				strcpy_s(name[i], line);
+				break;
+			case 1:
+				strcpy_s(workk[i], line);
+				intwork[i] = atoi(workk[i]);
+				break;
+			case 2:
+				strcpy_s(middlee[i], line);
+				intmiddle[i] = atoi(middlee[i]);
+				break;
+			case 3:
+				strcpy_s(finall[i], line);
+				intfinal[i] = atoi(finall[i]);
+				break;
+			}
+
+		}
+
+	}
+	//↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑讀檔處理↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+	//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓成績計算↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+	for (int i = 0; i < people; i++)
+	{
+		total[i] = intwork[i] * work + intmiddle[i] * middle + intfinal[i] * final;//單科單人總成績計算
+		average += total[i];													   //單科全班平均計算
+	}
+	average /= people;
+	for (int i = 0; i < people; i++)
+	{
+		SD += (average - total[i])*(average - total[i]);                           //單科標準差計算
+		distribute[(int)total[i] / 10]++;										   //單科平均分布計算
+	}
+	SD = sqrt(SD);
+	//↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑成績計算↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+	//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓顯示指令↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+	while (1)
+	{
+		cout << "您想看什麼呢?\n輸入1查看總成績\n輸入2查看成績分布\n輸入3為您調整成績\n輸入0為您結束程式\n";
+		cin >> cmd;
+		system("CLS");
+		if (cmd == 1)//顯示全部成績
+		{
+			cout << "座號   " << "平時成績   " << "期中成績   " << "期末成績   " << "總成績" << endl;
+			for (int i = 0; i < people; i++)
+			{
+				cout << name[i] << "        " << intwork[i] << "         " 
+					<< intmiddle[i] << "        " << intfinal[i] << "        ";
+				cout << total[i];
+				cout << endl;
+			}
+		}
+		else if (cmd == 2)//顯示成績分布
+		{
+			cout << "\n平均:" << average;
+			cout << "\n標準差:" << SD << endl;
+			cout << "成績分布:" << endl;
+			for (int i = 0; i < people; i++)
+			{
+				cout << 100 - i * 10 << "分~" << 90 - i * 10 << "分:" << distribute[9 - i] << endl;
+			}
+		}
+		else if (cmd == 3)//成績調整 以開根號乘10
+		{
+			SD = 0;
+			average = 0;
+			for (int i = 0; i < people; i++)
+			{
+				total[i] = sqrt((int)total[i]) * 10;
+				average += total[i];
+				distribute[i] = 0;
+			}
+			average /= people;
+			for (int i = 0; i < people; i++)
+			{
+				SD += (average - total[i])*(average - total[i]);
+				distribute[(int)total[i] / 10]++;
+			}
+			SD = sqrt(SD);
+		}
+		else if (cmd == 0)  //結束程式
+			break;
+		else//指令輸入錯誤
+		{
+			cout << "請輸入正確指令" << endl;
+		}
+	}
+	system("pause");
+}
+//↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑顯示指令↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
